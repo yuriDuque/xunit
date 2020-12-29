@@ -35,7 +35,7 @@ namespace Alura.LeilaoOnline.Core
 
         public void IniciaPregao()
         {
-
+            Estado = EstadoLeilao.LeilaoEmAndamento;
         }
 
         public void TerminaPregao()
