@@ -1,31 +1,47 @@
 ﻿using Xunit;
 using Alura.LeilaoOnline.Core;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Alura.LeilaoOnline.Tests
 {
     public class LeilaoRecebeLance
     {
-        [Theory]
-        [InlineData(4, new double[] { 1000, 1200, 1400, 1300 })]
-        [InlineData(2, new double[] { 800, 900 })]
+        public static IEnumerable<object[]> Data()
+        {
+            return new List<object[]>
+            {
+                new object[] { 4, new double[] { 1000, 1200, 1400, 1300 }, new string[] { "Fulano", "Maria", "Jose", "Carla" } },
+                new object[] { 2, new double[] { 800, 900 }, new string[] { "Fulano", "Maria" } },
+            };
+        }
+
+        [Theory, MemberData(nameof(Data))]
         public void NaoPermiteNovosLancesDadoLeilaoFinalizado(
-            int qtdeEsperada, double[] ofertas)
+            int qtdeEsperada, double[] ofertas, string[] nomeInteressados)
         {
             //Arranje - cenário
             var leilao = new Leilao("Van Gogh");
-            var fulano = new Interessada("Fulano", leilao);
+            var interessados = new List<Interessado>();
+
+            foreach (var nome in nomeInteressados)
+            {
+                interessados.Add(new Interessado(nome, leilao));
+            }
 
             leilao.IniciaPregao();
 
-            foreach (var valor in ofertas)
+            for (int i = 0; i < ofertas.Length; i++)
             {
-                leilao.RecebeLance(fulano, valor);
+                var oferta = ofertas[i];
+                var interessado = interessados[i];
+
+                leilao.RecebeLance(interessado, oferta);
             }
             leilao.TerminaPregao();
 
             //Act - método sob teste
-            leilao.RecebeLance(fulano, 1000);
+            leilao.RecebeLance(interessados.First(), 1000);
 
             //Assert
             var qtdeObtida = leilao.Lances.Count();
@@ -37,7 +53,7 @@ namespace Alura.LeilaoOnline.Tests
         {
             //Arranje - cenário
             var leilao = new Leilao("Van Gogh");
-            var fulano = new Interessada("Fulano", leilao);
+            var fulano = new Interessado("Fulano", leilao);
 
             leilao.IniciaPregao();
 

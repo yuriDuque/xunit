@@ -1,27 +1,41 @@
 ﻿using Alura.LeilaoOnline.Core;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Alura.LeilaoOnline.Tests
 {
     public class LeilaoTerminaPregao
     {
-        [Theory]
-        [InlineData(1200, new double[] { 800, 900, 1000, 1200 })]
-        [InlineData(1000, new double[] { 800, 900, 1000, 990 })]
-        [InlineData(800, new double[] { 800 })]
-        public void RetornaMaiorValorDadoLeilaoComPeloMenosUmLance(
-            double valorEsperado, 
-            double[] ofertas)
+        public static IEnumerable<object[]> Data()
+        {
+            return new List<object[]>
+            {
+                new object[] { 1200, new double[] { 800, 900, 1000, 1200 }, new string[] { "Fulano", "Maria", "Jose", "Carla" } },
+                new object[] { 1000, new double[] { 800, 900, 1000, 990 }, new string[] { "Fulano", "Maria", "Jose", "Carla" } },
+                new object[] { 800, new double[] { 800 }, new string[] { "Fulano" } },
+            };
+        }
+
+        [Theory, MemberData(nameof(Data))]
+        public void RetornaMaiorValorDadoLeilaoComPeloMenosUmLance(double valorEsperado, double[] ofertas, string[] nomeInteressados)
         {
             //Arranje - cenário
             var leilao = new Leilao("Van Gogh");
-            var fulano = new Interessada("Fulano", leilao);
+            var interessados = new List<Interessado>();
+
+            foreach (var nome in nomeInteressados)
+            {
+                interessados.Add(new Interessado(nome, leilao));
+            }
 
             leilao.IniciaPregao();
-
-            foreach(var valor in ofertas)
+            for (int i = 0; i < ofertas.Length; i++)
             {
-                leilao.RecebeLance(fulano, valor);
+                var oferta = ofertas[i];
+                var interessado = interessados[i];
+
+                leilao.RecebeLance(interessado, oferta);
             }
 
             //Act - método sob teste
