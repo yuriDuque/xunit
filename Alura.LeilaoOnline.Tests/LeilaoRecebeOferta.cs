@@ -21,7 +21,7 @@ namespace Alura.LeilaoOnline.Tests
             int qtdeEsperada, double[] ofertas, string[] nomeInteressados)
         {
             //Arranje - cenário
-            var leilao = new Leilao("Van Gogh");
+            var leilao = new Leilao("Van Gogh", new MaiorValor());
             var interessados = new List<Interessado>();
 
             foreach (var nome in nomeInteressados)
@@ -52,7 +52,7 @@ namespace Alura.LeilaoOnline.Tests
         public void NaoAceitaProximoLanceDadoMesmoClienteRealizouUltimo()
         {
             //Arranje - cenário
-            var leilao = new Leilao("Van Gogh");
+            var leilao = new Leilao("Van Gogh", new MaiorValor());
             var fulano = new Interessado("Fulano", leilao);
 
             leilao.IniciaPregao();

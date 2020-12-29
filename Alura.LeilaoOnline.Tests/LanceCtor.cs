@@ -11,7 +11,7 @@ namespace Alura.LeilaoOnline.Tests
         {
             // Arranje
             var valor = -100;
-            var leilao = new Leilao("Van Gogh");
+            var leilao = new Leilao("Van Gogh", new MaiorValor());
             var cliente = new Interessado("Fulado", leilao);
 
             // Assert

@@ -25,7 +25,7 @@ namespace Alura.LeilaoOnline.ConsoleApp
         private static void LeilaoComVariosLances()
         {
             //Arranje - cenário
-            var leilao = new Leilao("Van Gogh");
+            var leilao = new Leilao("Van Gogh", new MaiorValor());
             var fulano = new Interessado("Fulano", leilao);
             var maria = new Interessado("Maria", leilao);
 
@@ -47,7 +47,7 @@ namespace Alura.LeilaoOnline.ConsoleApp
         private static void LeilaoComApenasUmLance()
         {
             //Arranje - cenário
-            var leilao = new Leilao("Van Gogh");
+            var leilao = new Leilao("Van Gogh", new MaiorValor());
             var fulano = new Interessado("Fulano", leilao);
 
             leilao.RecebeLance(fulano, 800);
