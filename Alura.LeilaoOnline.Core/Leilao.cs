@@ -29,7 +29,11 @@ namespace Alura.LeilaoOnline.Core
         {
             if (Estado == EstadoLeilao.LeilaoEmAndamento)
             {
-                _lances.Add(new Lance(cliente, valor));
+                var ultimoCliente = _lances.Any() ? _lances.Last().Cliente : null;
+
+                if (cliente != ultimoCliente)
+                    _lances.Add(new Lance(cliente, valor));
+
             }
         }
 
