@@ -1,4 +1,5 @@
 ﻿using Alura.LeilaoOnline.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -44,7 +45,6 @@ namespace Alura.LeilaoOnline.Tests
             //Assert
             var valorObtido = leilao.Ganhador.Valor;
             Assert.Equal(valorEsperado, valorObtido);
-
         }
 
         [Fact]
@@ -52,6 +52,7 @@ namespace Alura.LeilaoOnline.Tests
         {
             //Arranje - cenário
             var leilao = new Leilao("Van Gogh");
+            leilao.IniciaPregao();
 
             //Act - método sob teste
             leilao.TerminaPregao();
@@ -63,5 +64,17 @@ namespace Alura.LeilaoOnline.Tests
             Assert.Equal(valorEsperado, valorObtido);
         }
 
+        [Fact]
+        public void LancaInvalidOperationExceptionDadoPregaoNaoIniciado()
+        {
+            //Arranje - cenário
+            var leilao = new Leilao("Van Gogh");
+
+            // Assert
+            Assert.Throws<InvalidOperationException>(
+                //Act - método sob teste
+                () => leilao.TerminaPregao()
+            );
+        }
     }
 }
